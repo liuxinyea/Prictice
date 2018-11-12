@@ -1,0 +1,21 @@
+{
+  "name": "node_prictice",
+  "version": "1.0.0",
+  "description": "prictice",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "prictice"
+  ],
+  "author": "liuxinye",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
