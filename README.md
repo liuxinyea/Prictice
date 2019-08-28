@@ -1,2 +1,2 @@
-# nodePrictice
-node.js练习项目
+# Prictice
+node.js和es6练习项目
