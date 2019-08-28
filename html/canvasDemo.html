@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+</head>
+<body id="content">
+<!--<img id="scream" style="display: block;width: 400px;height: 200px" src="./img/2eef20e.jpg" alt="The Scream">-->
+<div>
+    <button>缩放</button>
+    <button>平移</button>
+    <button>transform变换</button>
+    <button>旋转</button>
+</div>
+<canvas onmousedown="mouseDown(event)" onmousemove="mouseMove(event)" onmouseup="mouseUp(event)" id="myCanvas" width="600" height="600"
+        style="border:1px solid #000000;">
+</canvas>
+</body>
+</html>
+<script>
+    var x=20;
+    var y=20;
+    var ctx=null;
+    var start=false;
+    window.onload=function (ev) {
+        var canvas=document.getElementById("myCanvas");
+        ctx=canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.moveTo(20,20);
+        drawLine(x,y);
+
+    };
+    function mouseDown(event) {
+        this.start=true;
+    }
+    function mouseUp(event){
+        this.start=false;
+    }
+    function mouseMove(event) {
+        if (start){
+            x=event.clientX;
+            y=event.clientY;
+            drawLine(x,y);
+        }
+    }
+    function drawLine(x, y) {
+        var c=document.getElementById("myCanvas");
+        ctx.clearRect(0,0,c.width,c.height);
+        ctx.beginPath();
+        ctx.moveTo(20,20);
+        ctx.quadraticCurveTo(x,y,500,20);
+        ctx.stroke();
+    }
+
+</script>
