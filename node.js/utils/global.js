@@ -8,9 +8,9 @@ console.log(process.argv);
 process.stdout.write("请输入项目名称：");
 process.stdin.on("readable",()=>{
     const chunk = process.stdin.read();
+    console.log(chunk);
     if (chunk !== null) {
         process.stdout.write(`${chunk}`);
-        process.exit("1001")
     }
 });
 process.stdin.on('end', () => {

@@ -12,7 +12,17 @@
   "author": "liuxinye",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "body-parser": "^1.19.0",
+    "chalk": "^2.4.2",
+    "commander": "^3.0.1",
+    "cookie-parser": "^1.4.4",
+    "download-git-repo": "^2.0.0",
+    "express": "^4.16.4",
+    "handlebars": "^4.1.2",
+    "inquirer": "^7.0.0",
+    "log-symbols": "^3.0.0",
+    "multer": "^1.4.2",
+    "ora": "^3.4.0"
   },
   "repository": {
     "type": "git",
