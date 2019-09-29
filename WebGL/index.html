@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebGL</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script id="2d-vertex-shader" type="x-shader/x-vertex">
+attribute vec2 a_position;
+
+void main() {
+  gl_Position = vec4(a_position, 0, 1);
+}
+</script>
+
+    <script id="2d-fragment-shader" type="x-shader/x-fragment">
+void main() {
+  gl_FragColor = vec4(0, 1, 0, 1);  // green
+}
+</script>
+</body>
+<script>
+  let canvas=document.getElementById("canvas");
+  let gl=canvas.getContext("experimental-webgl");
+
+  let program=createProgra
+</script>
+</html>
