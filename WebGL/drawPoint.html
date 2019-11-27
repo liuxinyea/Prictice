@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+        <head>
+            <title>Point</title>
+            <script src="./glUtils.js"></script>
+        </head>
+<body>
+<canvas width = "300" height = "300" id = "my_Canvas"></canvas>
+   <script id="3d-vertex-shader" type="x-shader/x-vertex">
+    attribute vec3 coordinates;
+    
+    void main() {
+      gl_Position = vec4(coordinates,1.0);
+      gl_PointerSize =10.0;
+    }
+    </script>
+    
+    <script id="2d-fragment-shader" type="x-shader/x-fragment">
+    void main() {
+      gl_FragColor = vec4(1, 0.5, 0.0, 1);  // green
+    }
+    </script>    
+
+<script>
+   let canvas=document.getElementById("my_Canvas");
+   let gl=canvas.getContext("experimental-webgl");
+   
+   let vertices=[
+   -0.5,0.5,0.0,
+            0.0,0.5,0.0,
+            -0.25,0.25,0.0, 
+   ];
+   let glUtils=new GLUtils();
+   let programer=glUtils.createProgramFromScripts(gl,["3d-vertex-shader","2d-fragment-shader"]) 
+   gl.useProgram(programer);
+
+   let vertBuffer=gl.createBuffer();
+   gl.bindBuffer(gl.ARRAY_BUFFER,vertBuffer);
+   gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);
+   // Unbind the buffer
+//    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+   gl.bindBuffer(gl.ARRAY_BUFFER, vertBuffer);
+   let attrLocation=gl.getAttribLocation(programer,"coordinates");
+   gl.vertexAttribPointer(attrLocation,3,gl.FLOAT,false,0,0);
+   gl.enableVertexAttribArray(attrLocation);
+   
+    // Clear the canvas
+    gl.clearColor(0.5, 0.5, 0.5, 0.9);
+
+    // Enable the depth test
+    gl.enable(gl.DEPTH_TEST);
+
+    // Clear the color buffer bit
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    // Set the view port
+    gl.viewport(0,0,canvas.width,canvas.height);
+
+    // Draw the triangle
+    gl.drawArrays(gl.POINTS, 0, 3);
+
+
+</script>
+
+</body>
+</html>
