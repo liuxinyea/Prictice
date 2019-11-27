@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>requestAnimationFrame_ball</title>
+    <style>
+        #box{
+            width: 50px;
+            height: 50px;
+            background-color: skyblue;
+            border-radius: 50%;
+            position: absolute;
+            left: 10px;
+            top: 300px;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>
+
+<script>
+    var box = document.getElementById("box");
+    var xSpeed = 5;
+    var ySpeed = -10;
+
+    var boxLeft = 10;
+    var boxTop = 300;
+
+    function update(){
+        // 横坐标
+        boxLeft += xSpeed;
+        box.style.left = boxLeft + "px";
+        // 纵坐标
+        boxTop += ySpeed;
+
+        if(boxTop>window.innerHeight-50){
+            boxTop=window.innerHeight-50;
+        }
+
+        box.style.top = boxTop+"px";
+
+        // y轴方向的运动是向下的加速运动,所以每一帧都要增加速度
+        ySpeed += 1;
+
+
+        timer = requestAnimationFrame(update);
+
+        if(boxTop>=window.innerHeight-50){
+            // cancelAnimationFrame(timer);
+            ySpeed = -ySpeed*0.8;
+        }
+        if(boxLeft>=window.innerWidth-50 || boxLeft<0){
+            xSpeed = -xSpeed;
+        }
+
+
+    }
+
+    var timer = requestAnimationFrame(update);
+
+
+
+</script>
+</body>
+</html>

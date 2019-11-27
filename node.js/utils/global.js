@@ -8,13 +8,13 @@ console.log(process.argv);
 process.stdout.write("请输入项目名称：");
 process.stdin.on("readable",()=>{
     const chunk = process.stdin.read();
-    console.log(chunk);
-    if (chunk !== null) {
+    console.log(chunk+"--->");
+    if(chunk.toString()=="end"){
+        process.stdout.write('结束');
+        process.abort();
+    }else{
         process.stdout.write(`${chunk}`);
     }
-});
-process.stdin.on('end', () => {
-    process.stdout.write('结束');
 });
 process.on('exit', function(code) {
     // 以下代码永远不会执行

@@ -9,7 +9,7 @@ function route(pathname,res) {
         res(htmlStr);
     });
     indexHtml.on("error",function (e) {
-        res("404");
+        res("<h2>404</h2>");
     });
 
 }

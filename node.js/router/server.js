@@ -4,9 +4,8 @@ var url = require("url");
 
 function start(route) {
     function onRequest(request, response) {
-         var pathname = url.parse(request.url).pathname.split('/')[1]+".html";
+         var pathname = url.parse(request.url).pathname.split('/')[1];
          console.log("Request for " + pathname + " received.");
-
          route(pathname,function (res) {
             response.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
             response.write(res);

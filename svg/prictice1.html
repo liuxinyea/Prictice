@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .circle{
+            fill: white;
+            stroke: white;
+            stroke-width: 2;
+            /*stroke-linecap: round;*/
+            stroke-dasharray: 0,125.6;
+            animation: doAni 1s ease-in infinite;
+        }
+        @keyframes doAni {
+            80%{
+                fill: #ffffff;
+                stroke: #00B51D;
+            }
+            100%{
+                fill: #00B51D;
+                stroke: #00B51D;
+                stroke-dasharray: 125.6,0;
+            }
+        }
+    </style>
+</head>
+<body>
+<!--   <svg width="400" height="400"  style="border: 1px blue solid">-->
+<!--       <circle r="20" cx="20" cy="20" fill="blue"></circle>-->
+<!--   </svg>-->
+   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        viewBox="0 0 300 200" xml:space="preserve">
+        <path  class="st0" fill="red" stroke="#000" d="M181.5,111l-32,18l-31.6-18.7l0.4-36.7l32-18l31.6,18.7L181.5,111z M181.7,111.4l0.3-0.1
+            l0.4-37.3l-32.1-19l-32.5,18.3l-0.4,37.3l32.1,19L181.7,111.4z M118.8,73.9l31.5-17.8l31.1,18.4l-0.4,36.1l-31.5,17.8l-31.1-18.4
+            L118.8,73.9z"/>
+         <circle class="circle" r="20" cx="30" cy="30" ></circle>
+
+   </svg>
+</body>
+</html>
