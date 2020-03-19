@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>画图工具</title>
+        <style>
+           body{
+               height: 100%;
+               width: 100%;
+               margin: 0;
+               padding: 0;
+           }
+           .container{
+               height: 100%;
+               width: 100%;
+               margin: 0;
+               padding: 0;
+               position: absolute;
+               top: 30px;
+           }
+           canvas{
+               /* background-color: blue; */
+               position: absolute;
+               left: 0;
+           }
+           .btn_util1{
+             position: absolute;
+             width: 100px;
+             height: 30px;
+           }
+           .btn_util2{
+             position: absolute;
+             left: 100px;
+             width: 100px;
+             height: 30px;
+           }
+           .btn_util3{
+             position: absolute;
+             left: 200px;
+             width: 100px;
+             height: 30px;
+           }
+           .btn_util4{
+             position: absolute;
+             left:300px;
+             width: 100px;
+             height: 30px;
+           }
+           .btn_util5{
+             position: absolute;
+             left:400px;
+             width: 100px;
+             height: 30px;
+           }
+        </style>
+    </head>
+    <body>
+            <button  onclick="selectColor()" class="btn_util1">颜色</button>
+            <button onClick="restore()" class="btn_util2">撤回</button>
+            <button id="rect" onclick="drawReact()" class="btn_util3">绘制矩形</button>
+            <button id="circle" onclick="drawCircle()" class="btn_util4">绘制圆型</button>
+            <button id="text" onclick="insertText()" class="btn_util5">插入文字</button>
+            <div class="container"></div>
+    </body>
+    <script>
+        let WIDTH,
+            HEIGHT,
+            color="#0000ff",
+            started=false,
+            startDrawReact=false,
+            startDrawCircle=false,
+            addText=false,
+            nowPan,
+            startPoint={x:0,y:0};    
+        let pans=[];  
+        WIDTH=document.documentElement.clientWidth;
+        HEIGHT=document.documentElement.clientHeight;
+        let container=document.getElementsByClassName('container')[0];
+        console.log(container);
+        
+        container.addEventListener("mousedown",function(event){
+            // alert("11")
+            if(addText){
+                let input=document.createElement('input');
+                input.style.position='absolute';
+                input.style.left=event.clientX+'px';
+                input.style.top=event.clientY-30+'px';
+                input.onblur=function(){
+                    input.style.borderWidth=0;
+                    input.placeholder="";
+                };
+                input.placeholder="请输入文字";
+                pans.push(input);
+                container.appendChild(input);
+            }else{
+                let ctx=document.createElement("canvas");
+                nowPan=initPan(ctx);
+                nowPan.beginPath(); 
+                startPoint.x=event.clientX;
+                startPoint.y=event.clientY-30;
+                // nowPan.moveTo(event.clientX,event.clientY-30)
+                started=true;
+            }
+            
+        })
+        container.addEventListener("mousemove",function(event){
+
+            if(started){
+                if(startDrawReact){
+                    nowPan.clearRect(0,0,WIDTH,HEIGHT);
+                    nowPan.strokeRect(startPoint.x,startPoint.y,event.clientX-startPoint.x,event.clientY-30-startPoint.y);
+                }else if(startDrawCircle){
+                    nowPan.clearRect(0,0,WIDTH,HEIGHT);
+                    nowPan.arc(startPoint.x,startPoint.y,event.clientX-startPoint.x,0,2*Math.PI);
+                    nowPan.stroke();
+                }else{
+                    nowPan.lineTo(event.clientX,event.clientY-30);
+                    nowPan.stroke();
+                }
+            }
+            
+        })
+        container.addEventListener("mouseup",function(event){
+
+            //  content.save();
+             started=false; 
+            //  startDrawCircle=false;
+            //  startDrawReact=false;
+            //  addText=false;
+        })
+        function restore(){            
+            // content.restore();
+            if(pans.length==0){
+                return;
+            }
+            container.removeChild(pans[pans.length-1]);            
+            pans.splice(pans.length-1,1);
+            // console.log(pans);
+            
+        }
+        function initPan(canvasDom){
+            let ctx=canvasDom.getContext('2d');
+
+            canvasDom.width=WIDTH;
+            canvasDom.height=HEIGHT;
+
+            ctx.fillStyle=this.color;
+            ctx.lineJoin="round";
+            ctx.lineCap="round";
+            ctx.lineWidth=3;
+            pans.push(canvasDom);
+            container.appendChild(canvasDom);
+            return ctx;
+        }
+        function drawReact(){
+            startDrawReact=true;
+            addText=false;
+            startDrawCircle=false;
+            let rectBtn=document.getElementById('rect');
+            
+        }
+        function drawCircle(){
+            startDrawReact=false;
+            addText=false;
+            startDrawCircle=true;
+        }
+        function insertText(){
+            addText=true;
+        }
+    </script>
+</html>
