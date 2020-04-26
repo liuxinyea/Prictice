@@ -1,0 +1,77 @@
+<!--
+ * @Author: liuxinye
+ * @Date: 2020-04-22 15:36:34
+ * @LastEditors: liuxinye
+ * @LastEditTime: 2020-04-22 16:22:02
+ * @Description: 
+ -->
+<html>
+    <head>
+        <title>Logo 制作</title>
+        <style>
+            #bg{
+               /* height:500px;
+               width: 1000px; */
+               background-color: aquamarine;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               margin-top: 50px;
+            }
+            #logo_title{
+                font-size: 24px;
+            }
+        </style>
+    </head>
+    <div>
+        <span>文字</span>
+        <input placeholder="请输入文字" />
+        <span>文字大小</span>
+        <input type="number" value="24" />
+        <span>文字颜色</span>
+        <input placeholder="请输入颜色"/>
+        <span>背景色</span>
+        <input placeholder="请输入颜色"/>
+        <button >确定</button>
+    </div>
+    <canvas width="1000" height="500" id="bg">
+         
+    </canvas>
+    <script>
+        let myCanvas=document.getElementById("bg");
+        let context=myCanvas.getContext("2d");
+
+        var getPixelRatio = function (context) {
+            var backingStore = context.backingStorePixelRatio ||
+                context.webkitBackingStorePixelRatio ||
+                context.mozBackingStorePixelRatio ||
+                context.msBackingStorePixelRatio ||
+                context.oBackingStorePixelRatio ||
+                context.backingStorePixelRatio || 1;
+            return (window.devicePixelRatio || 1) / backingStore;
+        };
+        var ratio = getPixelRatio(context);
+        myCanvas.style.width = myCanvas.width + 'px';
+        myCanvas.style.height = myCanvas.height + 'px';
+        
+        myCanvas.width = myCanvas.width * ratio;
+        myCanvas.height = myCanvas.height * ratio;
+        context.fillStyle="#17acf0";
+        context.strokeStyle="red";
+        context.fillRect(0,0,1000*ratio,500*ratio);
+        context.font = 'bold 180px 楷体';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillStyle = '#fff';
+        // 设置文字阴影的颜色为黑色，透明度为20%
+        context.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        // 将阴影向右移动15px，向上移动10px
+        context.shadowOffsetX = 30;
+        context.shadowOffsetY = 10;
+        // 轻微模糊阴影
+        context.shadowBlur = 20;
+        // context.strokeText("Hello Canvas", 500*ratio, 250*ratio);
+        context.fillText("设计模式", 500*ratio, 250*ratio);
+
+    </script>
+</html>

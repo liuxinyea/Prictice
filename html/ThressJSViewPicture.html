@@ -1,0 +1,152 @@
+<!--
+ * @Author: liuxinye
+ * @Date: 2020-04-08 18:10:45
+ * @LastEditors: liuxinye
+ * @LastEditTime: 2020-04-09 09:39:22
+ * @Description: 
+ -->
+ <!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width,initial-scale=1.0"> 
+   <meta>
+   <link rel="stylesheet" href="../three.js/css/photo-sphere-viewer.css"/>
+   <title>720°VR全景</title>
+   <style>
+       html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        }
+
+        #photosphere {
+        width: 100%;
+        height: 100%;
+        }
+
+   </style>
+</head>
+<body>
+    <div id="photosphere"></div>
+</body>
+<script src="../three.js/js/three.js"></script>
+<script src="../three.js/js/uevent.js"></script>
+<script src="../three.js/js/doT.js"></script>
+<script src="../three.js/js/photo-sphere-viewer.js"></script>
+<script>
+    var panos = [
+    {
+      url: {
+        left: './assets/suntemple-cubemap/left.jpg',
+        front: './assets/suntemple-cubemap/front.jpg',
+        right: './assets/suntemple-cubemap/right.jpg',
+        back: './assets/suntemple-cubemap/back.jpg',
+        top: './assets/suntemple-cubemap/top.jpg',
+        bottom: './assets/suntemple-cubemap/bottom.jpg'
+      },
+      desc: 'Sun Temple (Unreal 4)'
+    },
+    {
+      url: [
+        './assets/test-cubemap/1.png',
+        './assets/test-cubemap/2.png',
+        './assets/test-cubemap/3.png',
+        './assets/test-cubemap/4.png',
+        './assets/test-cubemap/5.png',
+        './assets/test-cubemap/6.png'
+      ],
+      desc: 'Test cubemap'
+    },
+    {
+      url: [
+        './assets/WechatIMG_front.jpeg',
+        './assets/WechatIMG_back.jpeg',
+        './assets/WechatIMG_front.jpeg',
+        './assets/WechatIMG_back.jpeg',
+        './assets/WechatIMG_top.jpeg',
+        './assets/WechatIMG_bottom.jpeg',
+      ],
+      desc: 'my cubemap'
+    }
+  ];
+
+  var PSV = new PhotoSphereViewer({
+    container: 'photosphere',
+    panorama: './assets/WechatIMG_back.jpeg',
+    caption: panos[2].desc,
+    //fisheye: true,
+    time_anim: false,
+    default_long: Math.PI / 2,
+    loading_img: './assets/photosphere-logo.gif',
+    navbar: [
+      'autorotate', 'zoom', 'download', 'markers',
+      {
+        title: 'Change image',
+        className: 'custom-button',
+        content: '🔄',
+        onClick: (function() {
+          var i = 0;
+          var loading = false;
+
+          return function() {
+            if (loading) {
+              return;
+            }
+
+            i = 1 - i;
+            loading = true;
+            PSV.clearMarkers();
+
+            PSV.setPanorama(panos[i].url, {zoom: 50}, true)
+              .then(function() {
+                PSV.setCaption(panos[i].desc);
+                loading = false;
+              });
+          }
+        }())
+      },
+      {
+        title  : 'Random position',
+        className: 'custom-button',
+        content: '🔀',
+        onClick: function() {
+          PSV.animate({
+            longitude: (Math.random() - 0.5) * 2 * Math.PI,
+            latitude: (Math.random() - 0.5) * 3 / 4 * Math.PI,
+            zoom: Math.random() * 60 + 20
+          }, 1500);
+        }
+      },
+      'caption', 'gyroscope', 'stereo', 'fullscreen'
+    ],
+  });
+
+  PSV.on('click', function(e) {
+    if (e.marker && !e.marker.isPoly()) {
+      return;
+    }
+    PSV.addMarker({
+      id: '#' + Math.random(),
+      tooltip: 'Generated marker',
+      longitude: e.longitude,
+      latitude: e.latitude,
+      image: './assets/pin1.png',
+      width: 32,
+      height: 32,
+      anchor: 'bottom center',
+      data: {
+        deletable: true
+      }
+    });
+  });
+
+  PSV.on('select-marker', function(marker) {
+    if (marker.data && marker.data.deletable) {
+      PSV.removeMarker(marker);
+    }
+  });
+</script>
+</html>
