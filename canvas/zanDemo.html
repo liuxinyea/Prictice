@@ -1,0 +1,111 @@
+<!--
+ * @Author: liuxinye
+ * @Date: 2020-05-08 09:30:02
+ * @LastEditors: liuxinye
+ * @LastEditTime: 2020-05-08 10:37:37
+ * @Description: 
+ -->
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>css点赞动画效果</title>
+       <style>
+          /* l9288a571 */
+          .praise_bubble{
+             width: 100px;
+             height: 200px;
+             position: relative;
+             background-color: #f4f4f4;
+          }
+          .bubble{
+              position: absolute;
+              left: 25px;
+              bottom: 0;
+              height: 50px;
+              width: 50px;
+              border-width: 0;
+              transform: scale(.3);
+          }
+          .b1{
+              background: url('../img/dog.png');
+              background-size:50px 50px;
+          }
+          .b2{
+              background: url('../img/cat.png');
+              background-size:50px 50px;
+          }
+          .b3{
+              background: url('../img/red.png');
+              background-size:50px 50px;
+          }
+          .b4{
+              background: url('../img/zan1.png');
+              background-size:50px 50px;
+          }
+          .b5{
+              background: url('../img/start.png');
+              background-size:50px 50px;
+          }
+          .bl1{
+             animation: bubble_y 4s linear forwards;
+          }
+          .bl2{
+             animation: bubble_y 4s linear  forwards;
+          }
+          .bl3{
+             animation: bubble_y 4s linear  forwards;
+          }
+          .bl4{
+             animation: bubble_y 4s linear  forwards;
+          }
+          .bl5{
+             animation: bubble_y 4s linear  forwards;
+          }
+          .bl6{
+             animation: bubble_y 4s linear forwards;
+          }
+          @keyframes bubble_y {
+              0%{
+                  margin-bottom: 0;
+                  transform: scale(.3);
+              }
+              25%{
+                 margin-left: -10px;;
+              }
+              50%{
+                 margin-left: 10px;
+              }
+              75%{
+                  opacity: 1;
+                  margin-left: -15px;
+              }
+              100%{
+                  margin-bottom: 200px;
+                  opacity: 0;
+                  margin-left: 15px;
+                  transform: scale(1);
+              }
+          }
+       </style>
+    </head>
+    <body>
+       <div class="praise_bubble" id="praise_bubble">
+          <img class="bubble b3" onclick="zan()"></img>
+       </div>
+    </body>
+    <script>
+        let praiseBubble = document.getElementById("praise_bubble");
+        let last = 0;
+        function addPraise() {
+            const b =Math.floor(Math.random() * 5) + 1;
+            const bl =Math.floor(Math.random() * 6) + 1; // bl1~bl11
+            let d = document.createElement("div");
+            d.className = `bubble b${b} bl${bl}`;
+            d.dataset.t = String(Date.now());
+            praiseBubble.appendChild(d);
+        }
+        function zan(){
+            addPraise();
+        }
+    </script>
+</html>

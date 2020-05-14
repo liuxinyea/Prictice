@@ -1,0 +1,168 @@
+<!--
+ * @Author: liuxinye
+ * @Date: 2020-04-27 08:04:36
+ * @LastEditors: liuxinye
+ * @LastEditTime: 2020-05-07 14:14:51
+ * @Description: 
+ -->
+ <!DOCTYPE html>
+ <html>
+     <head>
+         <title>Blob</title>
+         <style>
+            #dragTarget{
+                 border: solid black 2px;
+                 width: 200px;
+                 height: 200px;
+                 display: flex;
+                 align-items: center;
+                 justify-content: center;
+            }
+            #dragTarget.active{
+                 border: solid red 4px;
+            }
+         </style>  
+     </head>
+     <body>
+         <div>
+             <input type="file" id="file"  placeholder="选择文件"/>
+           <div  id="dragTarget">
+               将文件拖放到此处
+           </div>
+           <div id="content"></div>
+         </div>
+         <script>     
+         let 
+         function test(files){
+              console.log(files instanceof Array)
+         }
+         function typeFile(file){
+                    //创建FileReader对象
+                    let reader=new FileReader();
+                    let typeArea=file.slice(0,4);//读取文件开头部分（前四个字节）
+                    //读取Blob,因为File对象为一个Blob对象的封装
+                    reader.readAsArrayBuffer(typeArea);
+                    //添加onload事件处理函数
+                    reader.onload=function(){
+                    let buffer=this.result;
+                    let view=new DataView(buffer);
+                    let type=view.getUint32(0,false);//以高位优先字节顺读取4个字节
+                    switch(type){
+                        case 0x89504E47:
+                                file.m_type="image/png";
+                                break;
+                        case 0x47494638:
+                                file.m_type="image/gif";
+                                break;
+                        case 0x25504446:
+                                file.m_type="application/pdf";
+                                break;
+                        case 0x504b0304:
+                                file.m_type="application/zip";
+                                break;    
+                    }
+                    console.log(file.name,file.m_type);
+                    }
+                    //添加onerror事件处理函数
+                    reader.onerror=function(error){
+                        console.log(error);
+                    }
+                }  
+              function readFile(file){
+                //创建FileReader对象
+                let reader=new FileReader();
+                //读取Blob,因为File对象为一个Blob对象的封装
+                reader.readAsText(file);
+                //添加onload事件处理函数
+                reader.onload=function(){
+                    let text=reader.result;//获得读取结果
+                    let content=document.getElementById("content");
+                    // content.innerHtml=text;
+                    //将结果写入到界面
+                    content.appendChild(document.createTextNode(text));
+                }
+                //添加onerror事件处理函数
+                reader.onerror=function(error){
+                    console.log(error);
+                }
+            }
+
+            function createTextAndDownload(){
+                let resBlob=new Blob(["这是要放入Blob中的字符串数据"],{type:"application/text"});
+                let a=document.createElement("a");
+                let url=URL.createObjectURL(resBlob);
+                    //将url赋值给a标签的href属性
+                    a.href=url;
+                    //下载的文件的文件名
+                    a.download="要下载的文件名称.txt";
+                    //触发click事件执行下载
+                    a.click();
+                    //要记得回收URL
+                    URL.revokeObjectURL(url);
+            }
+            function createHtml(){
+                var aFileParts = ['<a id="a"><b id="b">hey!</b></a>']; // 一个包含DOMString的数组
+                var oMyBlob = new Blob(aFileParts, {type : 'text/html'}); // 得到 blob
+                let a=document.createElement("a");
+                let url=URL.createObjectURL(oMyBlob);
+                //将url赋值给a标签的href属性
+                a.href=url;
+                //下载的文件的文件名
+                a.download="要下载的文件名称.html";
+                //触发click事件执行下载
+                a.click();
+                //要记得回收URL
+                URL.revokeObjectURL(url);
+            }
+            // createHtml()
+            // createTextAndDownload();
+            //禁用浏览器默认打开事件
+            document.addEventListener('drop', function (e) {
+                e.preventDefault()
+            }, false)
+            document.addEventListener('dragover', function (e) {
+                e.preventDefault()
+            }, false)
+             let dragTarget=document.getElementById("dragTarget");
+             dragTarget.ondragenter=function(e){
+                 let types=e.dataTransfer.types;
+                 //判断是否是文件类型
+                 if(!types||(types.contains&&types.contains("Files"))
+                 ||(types.indexOf&&types.indexOf("Files")!=-1)){
+                       //触发高亮
+                       dragTarget.classList.add('active');
+                       dragTarget.textContent="松手显示图片"
+                       return false;
+                 }
+             }
+             dragTarget.ondragleave=function(){
+                 dragTarget.classList.remove('active');
+                 dragTarget.textContent="将文件拖放到此处"
+             }
+             dragTarget.ondragover=function(){return false};
+             dragTarget.ondrop=function(e){
+                 let files=e.dataTransfer.files;
+                 console.log(typeof files)
+                 //遍历插入图片
+                 Array.prototype.forEach.call(files,file => {
+                     let type=file.type;
+                     //判断是否是图片类型
+                     if(type.indexOf('image/')!=-1){
+                         let img=document.createElement("img");
+                         img.onload=function(){
+                             this.width=100;
+                             this.height=100;
+                             document.body.append(this);
+                             URL.revokeObjectURL(file);
+                         }
+                         img.src=URL.createObjectURL(file);
+                     }
+                 });
+                 //完成操作，移除高亮样式
+                 dragTarget.classList.remove("active");
+                 dragTarget.textContent="将文件拖放到此处"
+                 return false;
+             }
+         </script>
+     </body>
+ </html>

@@ -1,0 +1,32 @@
+
+ <html>
+     <head>
+        <title>测试事件循环机制</title>
+     </head>
+     <body>
+         <div>
+            <span id="text">start</span>
+         </div>
+         <script>
+            let span=document.getElementById('text');
+            span.innerHTML="主宏任务"
+            setTimeout(() => {
+                span.innerHTML="宏任务-setTimeOut"
+                console.log(span.innerHTML);
+            }, 2000);
+            let p=Promise.resolve();
+            p.then(()=>{
+                setTimeout(()=>{
+                    span.innerHTML="微-promise1"
+                    console.log(span.innerHTML);
+                },200)
+            })
+            let p1=Promise.resolve();
+            p1.then(()=>{
+                span.innerHTML="微-promise2"
+                console.log(span.innerHTML);
+            })
+            console.log(span.innerHTML);
+         </script>
+     </body>
+ </html>
