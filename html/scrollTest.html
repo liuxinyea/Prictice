@@ -2,7 +2,7 @@
  * @Author: liuxinye
  * @Date: 2020-05-12 17:28:06
  * @LastEditors: liuxinye
- * @LastEditTime: 2020-05-14 18:22:45
+ * @LastEditTime: 2020-05-25 17:30:17
  * @Description: 
  -->
 <!DOCTYPE html>
@@ -41,16 +41,22 @@
             <div id="item4" class="scroll_item">
                 <span>4</span>
             </div>
+            <div id="item5" class="scroll_item">
+                <span>5</span>
+            </div>
        </div>
        <button onclick="addItem()">添加一个元素</button>
-       <input type="number" placeholder="请输入要滚动到的元素index" style="width: 200px;"/>
-       <button onclick="scrollToIndex()">滚动到指定元素</button>
+       <!-- <input type="number" placeholder="请输入要滚动到的元素index" style="width: 200px;"/>
+       <button onclick="scrollToElement()">滚动到指定元素</button>
+       <button onclick="scrollToBottom()">滚动到底部</button>
+       <button onclick="scrollToTop()">滚动到顶部</button> -->
+
     </body>
     <script>
         let container=document.getElementById("scroll_container");
        
         // let lastChild=document.getElementById("last");
-        let index=4;
+        let index=5;
         // container.scrollTo(0,container.scrollHeight-container.clientHeight)//IOS 手机 不兼容
         // container.scrollTop=container.scrollHeight-container.clientHeight;
         // console.log(container.scrollHeight-container.clientHeight);
@@ -64,71 +70,64 @@
                         </div>`;
             container.innerHTML+=item;  
             setTimeout(()=>{
-                scrollToIndex();
+                // scrollToIndex();
+                scrollToBottom(container);
             })
-           
          }
-         function scrollToIndex(){
-            let input=document.getElementsByTagName('input')[0];
-            let id='item'+input.value;
-            if(!input.value){
-                id='item'+index;
+
+         function scrollToBottom(containerEl){
+              if(!containerEl){
+                containerEl=container;
+              }
+              let dy=containerEl.scrollHeight-containerEl.clientHeight;
+              let scrollAnimationFn=doAnimation(dy,300,containerEl);
+              let interval=setInterval(()=>{
+                scrollAnimationFn(interval)
+              },10)
+         }
+         function scrollToTop(containerEl){
+              if(!containerEl){
+                containerEl=container;
+              }
+              let dy=-(containerEl.scrollHeight-containerEl.clientHeight);
+              let scrollAnimationFn=doAnimation(dy,300,containerEl);
+              let interval=setInterval(()=>{
+                scrollAnimationFn(interval)
+              },10)
+         }
+         function scrollToElement(containerEl,el){
+            if(!containerEl){
+                containerEl=container;
             }
-            let item=document.getElementById(id);
-            //scrollTo实现,因为item.getBoundingClientRect().top子元素顶部是相对于视口顶部距离差
-            //，因此需要加上内容的偏移量scrollTop
-            // let top=item.getBoundingClientRect().top;
-            // dy=top;
-            // if(top!=0){
-            //     top+=container.scrollTop;
-            //     // container.scrollTo(0,top)
-            // }
-            // value=container.scrollTop;
-            // scrollTo(container,0,top,1000)
-            //scrollBy实现,
-            // container.scrollBy(0,item.getBoundingClientRect().top)
-            // value=0;
-            // scrollBy(container,0,item.getBoundingClientRect().top,1000);
-            //scrollTop实现
-            //滚动到底部
-            // container.scrollTop=container.scrollHeight-container.clientHeight;
-            let top=item.getBoundingClientRect().top;
-            dy=top;
-            if(top!=0){
-                value=
-                top+=container.scrollTop;
-                // container.scrollTop=top;
-                scroll(container,top,500)
+            if(!el){
+                let input=document.getElementsByTagName('input')[0];
+                let id='item'+input.value;
+                if(!input.value){
+                    id='item'+index;
+                }
+                el=document.getElementById(id);
             }
+            let scrollAnimationFn=doAnimation(el.getBoundingClientRect().top,300,containerEl);
+            let interval=setInterval(()=>{
+                scrollAnimationFn(interval)
+            },10)
          }
-         let dy=0;//根据偏移量控制速度
-         let value=0;
-         function scrollBy(el,x,y,duration){ 
-                let step=y*24/duration
-                value+=step;
-                console.log(value,y)
-                if((y>0&&value>y)||(y<0&&value<y))
-                  return;
-                el.scrollBy(x,step);
-                requestAnimationFrame(scrollBy.bind(null,el,x,y,duration));
-         }
-         function scrollTo(el,x,y,duration){ 
-                let step=dy*24/duration
-                value+=step;
-                console.log(value,y)
-                if((step>0&&value>y)||(step<0&&value<y))
-                  return;
-                el.scrollTo(x,value);
-                requestAnimationFrame(scrollTo.bind(null,el,x,y,duration));
-         }
-         function scroll(el,y,duration){   
-                let step=dy*24/duration
-                value+=step;
-                console.log(value,y,step)
-                if((step>0&&value>y)||(step<0&&value<y))
-                  return;
-                el.scrollTop=value;
-                requestAnimationFrame(scroll.bind(null,el,y,duration));
+         /**
+          * @description: 
+          * @param {type} 
+          * @return: 
+          */
+         function doAnimation(dy,duration,el){
+              //使用闭包保存变量exe_dy和step等变量(每次动画滚动的距离)
+              let exe_dy=0;
+              let step=dy/(duration/10);
+              return function(interval){
+                  exe_dy+=step;
+                  if(Math.abs(exe_dy)>=Math.abs(dy)){
+                      clearInterval(interval);
+                  }
+                  el.scrollBy(0,step);
+              }
          }
     </script>
 </html>
