@@ -11,7 +11,7 @@ class Sort{
 
     }
     //冒泡排序
-    static bubblingSort(array){  
+    static bubblingSort(array){
         //length只取一次，提高性能
         let leng=array.length;
         for(let i=0;i<=leng-1;i++){
@@ -68,19 +68,33 @@ class Sort{
     //归并排序
     static mergeSort(array){
         console.log("sort");
-        
+
     }
     //快速排序
     static quickSort(array){
-        let keyIndex=0;
-        
+         if(array.length<2){
+             return array;
+         }
+         let target=array[0];
+         let left=array.filter(item=>{
+             if(item<target){
+                 return item;
+             }
+         });
+        let right=array.filter(item=>{
+            if(item>target){
+                return item;
+            }
+        });
+        return Sort.quickSort(left).concat(target).concat( Sort.quickSort(right));
     }
     //堆排序
     static heapSort(array){
         console.log("sort");
-        
+
     }
 }
 let array=[1,3,4,5,2,10,9,8];
-let result=Sort.insertionSort(array);
+let result=Sort.quickSort(array);
 console.log(result);
+
