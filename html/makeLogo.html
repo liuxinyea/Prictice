@@ -2,7 +2,7 @@
  * @Author: liuxinye
  * @Date: 2020-04-22 15:36:34
  * @LastEditors: liuxinye
- * @LastEditTime: 2020-04-22 16:22:02
+ * @LastEditTime: 2020-07-10 14:57:13
  * @Description: 
  -->
 <html>
@@ -12,7 +12,8 @@
             #bg{
                /* height:500px;
                width: 1000px; */
-               background-color: aquamarine;
+               /* border-radius: 10px; */
+               background-color: white;
                display: flex;
                align-items: center;
                justify-content: center;
@@ -25,16 +26,16 @@
     </head>
     <div>
         <span>文字</span>
-        <input placeholder="请输入文字" />
+        <input id="text" placeholder="请输入文字" value="问"/>
         <span>文字大小</span>
-        <input type="number" value="24" />
+        <input id="textSize" type="number" value="120" />
         <span>文字颜色</span>
-        <input placeholder="请输入颜色"/>
+        <input id="textColor" placeholder="请输入颜色"/>
         <span>背景色</span>
-        <input placeholder="请输入颜色"/>
-        <button >确定</button>
+        <input id="bgColor" placeholder="请输入颜色"/>
+        <button onclick="draw()">确定</button>
     </div>
-    <canvas width="1000" height="500" id="bg">
+    <canvas  width="100" height="100" id="bg">
          
     </canvas>
     <script>
@@ -53,25 +54,64 @@
         var ratio = getPixelRatio(context);
         myCanvas.style.width = myCanvas.width + 'px';
         myCanvas.style.height = myCanvas.height + 'px';
-        
+            
         myCanvas.width = myCanvas.width * ratio;
         myCanvas.height = myCanvas.height * ratio;
-        context.fillStyle="#17acf0";
-        context.strokeStyle="red";
-        context.fillRect(0,0,1000*ratio,500*ratio);
-        context.font = 'bold 180px 楷体';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.fillStyle = '#fff';
-        // 设置文字阴影的颜色为黑色，透明度为20%
-        context.shadowColor = 'rgba(0, 0, 0, 0.5)';
-        // 将阴影向右移动15px，向上移动10px
-        context.shadowOffsetX = 30;
-        context.shadowOffsetY = 10;
-        // 轻微模糊阴影
-        context.shadowBlur = 20;
-        // context.strokeText("Hello Canvas", 500*ratio, 250*ratio);
-        context.fillText("设计模式", 500*ratio, 250*ratio);
-
+        var Point = function(x, y) {
+            return {x:x, y:y};
+        };
+        var Rect=function(x,y,w,h){
+            return{
+                x:x,
+                y:y,
+                width:w,
+                height:h
+            }
+        }
+        var rect = Rect(50, 50, 300, 200);
+                
+        function drawRoundedRect(rect, r, ctx) {
+            var ptA = Point(rect.x + r, rect.y);
+            var ptB = Point(rect.x + rect.width, rect.y);
+            var ptC = Point(rect.x + rect.width, rect.y + rect.height);
+            var ptD = Point(rect.x, rect.y + rect.height);
+            var ptE = Point(rect.x, rect.y);
+            
+            ctx.beginPath();
+            
+            ctx.moveTo(ptA.x, ptA.y);
+            ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, r);
+            ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, r);
+            ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, r);
+            ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, r);
+        
+            ctx.fill();
+        }
+        function draw(){
+            let text=document.getElementById("text").value;
+            let textSize=document.getElementById("textSize").value;
+            let textColor=document.getElementById("textColor").value;
+            let bgColor=document.getElementById("bgColor").value;
+            context.fillStyle=bgColor?bgColor:"#17acf0";
+            var rect = Rect(0,0,100*ratio,100*ratio);
+            drawRoundedRect(rect,50,context)
+            context.font = `bold ${textSize?textSize:'20'}px 楷体`;
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillStyle =textColor?textColor:'#fff';
+            // 设置文字阴影的颜色为黑色，透明度为20%
+            context.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            // 将阴影向右移动15px，向上移动10px
+            context.shadowOffsetX = 30;
+            context.shadowOffsetY = 10;
+            // 轻微模糊阴影
+            context.shadowBlur = 20;
+            // context.strokeText("Hello Canvas", 500*ratio, 250*ratio);
+            context.fillText(text, 50*ratio, 50*ratio);
+            var img=new Image()
+            img.src="./assets/askLogo.png"
+            context.drawImage(img,0,0);
+        }
+        
     </script>
 </html>

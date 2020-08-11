@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>BOM练习</title>
+    </head>
+    <body>
+        <div>
+            <button id="openWindow">打开窗口</button>
+        </div>
+    </body>
+    <script>
+        document.getElementById('openWindow').onclick=function(){
+            // window.open('http://www.baidu.com')
+           let badidu=window.open("http://www.baidu.com/","baidu",
+            "height=400,width=400,top=10,left=10,toolbar=yes");
+            setTimeout(()=>{
+                badidu.close();
+            },2000)
+           
+        }
+    </script>
+</html>
