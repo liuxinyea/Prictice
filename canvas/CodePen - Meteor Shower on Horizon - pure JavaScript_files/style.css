@@ -1,0 +1,26 @@
+* {
+  font-family: "arial black", Helvetica, verdana, monospace, sans-serif;
+  letter-spacing: 0.2rem;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  overflow: hidden;
+}
+
+body {
+  position: relative;
+}
+
+canvas#canvas {
+  display: block;
+  background: #000;
+}
+
+#filter {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: rgba(0, 0, 0, 0.6);
+}

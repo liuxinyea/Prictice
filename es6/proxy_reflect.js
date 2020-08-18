@@ -9,7 +9,11 @@ let userProxy=new Proxy(user,{
     get(target,prop,receiver){
         // console.log(target);
         // console.log(receiver);
-        return Reflect.get(...arguments);
+        console.log(target[prop]);
+        console.log(target)
+        return Reflect.get(target,prop,receiver);
+        console.log()
+        return target[prop]
     }
 })
 let admin={
