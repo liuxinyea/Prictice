@@ -5,20 +5,13 @@
     "version": "0.2.0",
     "configurations": [
     {
-        "type": "node",
+        "name": "Launch MyPromise",
         "request": "launch",
-        "name": "Launch Program",
-        "program": "${workspaceFolder}/app.js",
+        "type": "node",
+        "program": "${workspaceFolder}/es6/MyPromise.js",
         "skipFiles": [
             "<node_internals>/**"
         ]
     },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
-        }
     ]
 }
