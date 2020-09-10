@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rich Text editing</title>
+        <style>
+            .editable{
+                width: 80%;
+                margin-left: 10%;
+                height:500px;
+                border: 1px #666 solid;
+                margin-top: 20px;
+                border-radius: 5px;
+                padding: 5px;
+            }
+            .toolbar{
+                height: 50px;
+                width: 80%;
+                margin-left: 10%;
+                background-color: #eeeeee;
+                padding: 5px;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="toolbar" id="toolbar">
+            <button id="h1">H1</button>
+            <button id="h2">H2</button>
+            <button id="h3">H3</button>
+            <button id="b">B</button>
+            <button id="u">U</button>
+            <button id="i">I</button>
+            <button id="a">超链接</button>
+            <button id="mark">标记</button>
+        </div>
+        <div class="editable" id="richedit" contenteditable>
+            <span>hello</span>
+            <b>aaaaaa</b>
+            <input type="range" />
+        </div>
+
+    </body>
+    <script>
+        let richedit = document.getElementById("richedit");
+        window.onload=function(){
+            richedit.contentEditable = "true";
+        }
+        let toolbar=document.getElementById('toolbar');
+        toolbar.addEventListener('click',function(event){
+             switch(event.target.id){
+                 case 'h1':
+                     document.execCommand('formatblock',false,"<h1>")
+                     break;
+                     case 'h2':
+                     document.execCommand('formatblock',false,"<h2>")
+                     break;
+                     case 'h3':
+                     document.execCommand('formatblock',false,"<h3>")
+                     break;
+                     case 'b':
+                     document.execCommand('bold',false,null)
+                     break;
+                     case 'u':
+                     document.execCommand('underline',false,null)
+                     break;
+                     case 'i':
+                     document.execCommand('italic',false,null)
+                     break;
+                     case 'a':
+                     var href=prompt("请输入网址","http://www.baidu.com");
+                     if (href!=null && href!=""){
+                        document.execCommand('createlink',false,href)
+                     }
+                     break;
+                     case 'mark':
+                        var selection = document.getSelection();
+
+                        //取得选择的文本
+                        var selectedText = selection.toString();
+
+                        //取得代表选区的范围
+                        var range = selection.getRangeAt(0);
+
+                        //突出显示选择的文本
+                        var span =document.createElement("div");
+                        span.style.backgroundColor = "yellow";
+                        span.style.display = "inline";
+                        range.surroundContents(span);
+                     break;
+             }
+        })
+    </script>
+</html>
