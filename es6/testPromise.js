@@ -71,10 +71,41 @@ class MyPromise{
     catch(){
         
     }
-    all(){
-       this.promises=arguments;
-       return new MyPromise((resolveFn,rejectFn)=>{
-             
-       })
-    }
+    
+}
+MyPromise.all=function(promises){
+    let res=[];
+    return new Promise((resolveFn,rejectFn)=>{
+            promises.forEach(promise=>{
+                promise.then((value)=>{
+                    res.push(value);
+                    if(res.length==promises.length){
+                        resolveFn(res);
+                    }
+                },rejectFn)
+            })
+    })
+ }
+let p1=new Promise((resolve,reject)=>{
+       resolve(1);
+})
+let p2=new Promise((resolve,reject)=>{
+    reject('error')
+})
+
+let p3=new Promise((resolve,reject)=>{
+    resolve(3);
+})
+MyPromise.all([p1,p2,p3]).then((res)=>{
+   console.log(res)
+},(error)=>{
+    console.log(error)
+})
+
+function LinkNode(){
+     this.value=null;
+     this.next=null;
+}
+function re(head){
+     
 }

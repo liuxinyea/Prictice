@@ -2,7 +2,7 @@
  * @Author: liuxinye
  * @Date: 2020-04-01 16:32:16
  * @LastEditors: liuxinye
- * @LastEditTime: 2020-04-02 10:49:47
+ * @LastEditTime: 2020-09-18 08:12:56
  * @Description: 排序算法练习
  */
 
@@ -12,43 +12,43 @@ class Sort{
     }
     //冒泡排序
     static bubblingSort(array){
-        //length只取一次，提高性能
-        let leng=array.length;
-        for(let i=0;i<=leng-1;i++){
+        let length=array.leng;
+        for(let i=0;i<length;i++){
             let temp=null;
-            for(let j=0;j<=leng-1-i;j++){
+            //每遍循环把最大值找出来，冒泡到未排序序列的最后
+            for(let j=0;j<length-i;j++){
                 if(array[j]>array[j+1]){
-                   temp=array[j];
-                   array[j]=array[j+1];
-                   array[j+1]=temp;
+                    temp=array[j];
+                    array[j]=array[j+1];
+                    array[j+1]=temp;
                 }
             }
-            //优化，没有替换过说明顺序已经是对的，不再排序
-            if(!temp)
-              break;
+            if(!temp){//表明此趟循环未发现顺序不对的，说明未处理队列都是有序的
+               break;
+            }
         }
         return array;
     }
     //选择排序
     static selectionSort(array){
-        //length只取一次，提高性能
-        let leng=array.length;
-        for(let i=0;i<=leng-1;i++){
-           let minIndex=i;
-           //每趟循环都找去剩余元素中的最小值，并放到已排序的元素的后面一位（替换）
-           for(let j=i+1;j<=leng-1;j++){
-               if(array[j]<array[minIndex]){
+        let length=array.length;
+        for(let i=0;i<length;i++){
+            let minIndex=i;
+            for(let j=i+1;j<length;i++){
+                if(array[i]>array[j]){
                     minIndex=j;
-               }
-           }
-           let temp=array[minIndex];
-           array[minIndex]=array[i];
-           array[i]=temp;
+                }
+            }
+            if(minIndex!=i){
+                let temp=array[i];
+                array[i]=array[minIndex]
+                array[minIndex]=temp;       
+            }
         }
-        return array;
     }
     //插入排序
     static insertionSort(array){
+        
         for(let i=1;i<array.length;i++){
             let target=i;
             //拿已经排好的序列的后一位元素与之前排好序的所有元素进行比较
@@ -70,7 +70,7 @@ class Sort{
         console.log("sort");
 
     }
-    //快速排序
+    //快速排序,随便去一个数，以其为基准左右划分，以此递归
     static quickSort(array){
          if(array.length<2){
              return array;
@@ -86,7 +86,7 @@ class Sort{
                 return item;
             }
         });
-        return Sort.quickSort(left).concat(target).concat( Sort.quickSort(right));
+        return Sort.quickSort(left).concat(target).concat(Sort.quickSort(right));
     }
     //堆排序
     static heapSort(array){

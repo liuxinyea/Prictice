@@ -8,7 +8,7 @@
         "name": "Launch MyPromise",
         "request": "launch",
         "type": "node",
-        "program": "${workspaceFolder}/es6/MyPromise.js",
+        "program": "${workspaceFolder}/es6/testPromise.js",
         "skipFiles": [
             "<node_internals>/**"
         ]
