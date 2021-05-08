@@ -19,7 +19,7 @@
     "cookie-parser": "^1.4.4",
     "download-git-repo": "^2.0.0",
     "express": "^4.16.4",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.7.7",
     "inquirer": "^7.0.0",
     "log-symbols": "^3.0.0",
     "multer": "^1.4.2",
